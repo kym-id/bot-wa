@@ -24,3 +24,5 @@ export async function GET(request: Request) {
     noun,
   });
 }
+
+export const dynamic = "force-dynamic";
