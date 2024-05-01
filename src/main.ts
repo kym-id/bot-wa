@@ -20,3 +20,5 @@ process.on("SIGINT", async () => {
   //   context.get('server:logger').warn('HTTP - OFF');
   process.exit(0);
 });
+
+module.exports = context.get("app");
