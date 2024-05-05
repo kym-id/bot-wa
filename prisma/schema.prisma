@@ -12,4 +12,30 @@ model User {
   jid      String @unique
   name     String @db.Char(50)
   pronouns String @db.Char(10)
+
+  vouchers Voucher[]
+}
+
+model Event {
+  id   String @id @default(cuid())
+  slug String @unique @db.Char(15)
+  name String @db.Char(50)
+  key  String @db.Char(20)
+
+  open Boolean @default(true)
+
+  vouchers Voucher[]
+}
+
+model Voucher {
+  id      String @id @default(cuid())
+  event   Event  @relation(fields: [eventId], references: [id])
+  eventId String
+  user    User   @relation(fields: [userId], references: [id])
+  userId  String
+  code    String @db.Char(20)
+
+  redeemAt  DateTime?
+  redeemBy  String?
+  createdAt DateTime  @default(now())
 }
