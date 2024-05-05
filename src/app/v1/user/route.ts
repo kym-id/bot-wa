@@ -16,8 +16,6 @@ export async function GET(request: NextRequest) {
 
   const user = await prisma.user.findUnique({ where: { jid } });
 
-  console.log(user);
-
   return NextResponse.json({ success: true, data: user, exists: !!user });
 }
 

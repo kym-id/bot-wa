@@ -1,13 +1,8 @@
 import { NextResponse } from "next/server";
-import dayjs from "dayjs";
-import timezone from "dayjs/plugin/timezone";
-import utc from "dayjs/plugin/utc";
-
-dayjs.extend(utc);
-dayjs.extend(timezone);
+import { getCurrentWIB } from "~/lib/time";
 
 export async function GET(request: Request) {
-  const now = dayjs.tz(new Date(), "Asia/Jakarta");
+  const now = getCurrentWIB();
 
   const h = now.hour();
   let noun = "";
