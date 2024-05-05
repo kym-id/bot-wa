@@ -5,9 +5,7 @@ import { NextRequest } from "next/server";
 require("dayjs/locale/id");
 
 export async function GET(request: NextRequest) {
-  const siteUrl = process.env.VERCEL
-    ? process.env.VERCEL_URL
-    : "https://3000-kymid-botwa-s464qnzasr9.ws-us110.gitpod.io";
+  const siteUrl = process.env.NEXT_PUBLIC_APP_URL || "https://bot.kym.my.id";
   const now = getCurrentWIB();
 
   const { searchParams } = new URL(request.url);
