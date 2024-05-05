@@ -33,9 +33,11 @@ model Voucher {
   eventId String
   user    User   @relation(fields: [userId], references: [id])
   userId  String
-  code    String @db.Char(20)
+  code    String @unique @db.Char(20)
 
   redeemAt  DateTime?
   redeemBy  String?
   createdAt DateTime  @default(now())
+
+  @@unique([eventId, userId])
 }
