@@ -24,6 +24,7 @@ export async function POST(request: NextRequest) {
     jid: string;
     name: string;
     pronouns: string;
+    agency: string;
   };
   const user = await prisma.user.upsert({
     where: {
@@ -33,10 +34,30 @@ export async function POST(request: NextRequest) {
       jid: res.jid,
       name: res.name,
       pronouns: res.pronouns,
+      agency: res.agency,
     },
     update: {
       name: res.name,
       pronouns: res.pronouns,
+      agency: res.agency,
+    },
+  });
+  return NextResponse.json({ user });
+}
+
+export async function PUT(request: NextRequest) {
+  const res = (await request.json()) as Partial<{
+    jid: string;
+    name: string;
+    pronouns: string;
+    agency: string;
+  }>;
+  const user = await prisma.user.update({
+    where: {
+      jid: res.jid,
+    },
+    data: {
+      agency: res.agency,
     },
   });
   return NextResponse.json({ user });

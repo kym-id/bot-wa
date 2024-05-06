@@ -13,6 +13,8 @@ model User {
   name     String @db.Char(50)
   pronouns String @db.Char(10)
 
+  agency String? @db.Char(50)
+
   vouchers Voucher[]
 }
 
