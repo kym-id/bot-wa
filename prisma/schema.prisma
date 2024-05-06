@@ -8,14 +8,31 @@ datasource db {
 }
 
 model User {
-  id       String @id @default(cuid())
-  jid      String @unique
+  jid      String @id
   name     String @db.Char(50)
   pronouns String @db.Char(10)
 
-  agency String? @db.Char(50)
+  agency   String?       @db.Char(50)
+  followUp BotFollowUp[]
 
   vouchers Voucher[]
+
+  createdAt DateTime @default(now())
+}
+
+model BotFollowUp {
+  id  String @id @default(cuid())
+  key String @db.Char(20)
+
+  user   User   @relation(fields: [userId], references: [jid])
+  userId String
+
+  answer String?
+
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+
+  @@unique([key, userId])
 }
 
 model Event {
@@ -27,13 +44,15 @@ model Event {
   open Boolean @default(true)
 
   vouchers Voucher[]
+
+  createdAt DateTime @default(now())
 }
 
 model Voucher {
   id      String @id @default(cuid())
   event   Event  @relation(fields: [eventId], references: [id])
   eventId String
-  user    User   @relation(fields: [userId], references: [id])
+  user    User   @relation(fields: [userId], references: [jid])
   userId  String
   code    String @unique @db.Char(20)
 
