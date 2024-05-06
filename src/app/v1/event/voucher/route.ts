@@ -40,12 +40,12 @@ export async function GET(request: NextRequest) {
       where: {
         eventId_userId: {
           eventId: eventData.id,
-          userId: userData.id,
+          userId: userData.jid,
         },
       },
       create: {
         eventId: eventData.id,
-        userId: userData.id,
+        userId: userData.jid,
         code: makeId(20),
       },
       update: {},

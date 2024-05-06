@@ -24,7 +24,7 @@ model BotFollowUp {
   id  String @id @default(cuid())
   key String @db.Char(20)
 
-  user   User   @relation(fields: [userId], references: [jid])
+  user   User   @relation(fields: [userId], references: [jid], onDelete: Cascade)
   userId String
 
   answer String?
