@@ -12,8 +12,8 @@ model User {
   name     String @db.Char(50)
   pronouns String @db.Char(10)
 
-  agency   String?       @db.Char(50)
-  followUp BotFollowUp[]
+  institution String?       @db.Char(50)
+  followUp    BotFollowUp[]
 
   vouchers Voucher[]
 
@@ -52,7 +52,7 @@ model Voucher {
   id      String @id @default(cuid())
   event   Event  @relation(fields: [eventId], references: [id])
   eventId String
-  user    User   @relation(fields: [userId], references: [jid])
+  user    User   @relation(fields: [userId], references: [jid], onDelete: Cascade)
   userId  String
   code    String @unique @db.Char(20)
 
