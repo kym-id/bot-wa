@@ -39,7 +39,7 @@ model Event {
   id   String @id @default(cuid())
   slug String @unique @db.Char(15)
   name String @db.Char(50)
-  key  String @db.Char(20)
+  key  String @unique @db.Char(20)
 
   open Boolean @default(true)
 
