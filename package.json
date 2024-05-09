@@ -16,7 +16,8 @@
     "qr-scanner": "^1.4.2",
     "react": "^18",
     "react-dom": "^18",
-    "sonner": "^1.4.41"
+    "sonner": "^1.4.41",
+    "zustand": "^4.5.2"
   },
   "devDependencies": {
     "@types/node": "^20",
