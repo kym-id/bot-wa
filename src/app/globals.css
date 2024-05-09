@@ -34,7 +34,7 @@ body {
 
 .qr-reader {
   width: 430px;
-  height: 100vh;
+  height: 100%;
   margin: 0 auto;
   position: relative;
 }

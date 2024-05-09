@@ -1,17 +1,12 @@
 import { Metadata } from "next";
-import React from "react";
-import { QrReader } from "~/components/qr-scanner";
+import { QRScanComponent } from "./components";
 
 export const metadata: Metadata = {
   title: "Scan QR penukaran souvenir",
 };
 
-function QRSouvenirScan() {
-  return (
-    <div>
-      <QrReader />
-    </div>
-  );
+function QRSouvenirScanPage() {
+  return <QRScanComponent />;
 }
 
-export default QRSouvenirScan;
+export default QRSouvenirScanPage;
