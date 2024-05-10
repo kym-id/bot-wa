@@ -28,3 +28,27 @@ export async function addToGroup({ gid, jid }: { jid: string; gid: string }) {
   });
   return res;
 }
+
+export async function sendMessage({
+  jid,
+  message,
+}: {
+  jid: string;
+  message: string;
+}) {
+  const res = await send({
+    path: `/message/sendText/${process.env.WA_BOT_INSTANCE}`,
+    body: {
+      number: jid,
+      options: {
+        delay: 1200,
+        presence: "composing",
+      },
+      textMessage: {
+        text: message,
+      },
+    },
+    method: "POST",
+  });
+  return res;
+}
