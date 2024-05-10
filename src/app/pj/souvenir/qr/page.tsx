@@ -17,12 +17,13 @@ async function QRSouvenirScanPage({
   params: { slug: string };
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
-  const key = searchParams["key"];
-  if (!key) {
+  const _key = searchParams["key"];
+  if (!_key) {
     return <div>Please provide key to url</div>;
   }
+  const key = _key as string;
   const event = await prisma.event.findUnique({
-    where: { key: key as string },
+    where: { key },
     include: { vouchers: true },
   });
   if (!event) {
@@ -39,12 +40,13 @@ async function QRSouvenirScanPage({
     }
     return p;
   }, 0);
+
   return (
-    <div className="flex flex-col justify-center items-center w-full md:w-6/12 mx-auto select-none">
+    <div className="flex flex-col justify-center items-center w-full md:w-6/12 mx-auto select-none text-white h-dvh">
       <EventSouvenirStateSetter
-        initialState={{ totalVoucher, totalRedeemed }}
+        initialState={{ totalVoucher, totalRedeemed, key }}
       />
-      <div className="flex h-[50%]">
+      <div className="flex h-[50%] relative">
         <QRScanComponent />
       </div>
       <div className="mt-2 w-full flex flex-col items-center">

@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 
 import QrScanner from "qr-scanner";
 
-const QrReader = () => {
+const QrReader = ({ onScan }: { onScan?: (text: string) => void }) => {
   const scanner = useRef<QrScanner>();
   const videoEl = useRef<HTMLVideoElement>(null);
   const qrBoxEl = useRef<HTMLDivElement>(null);
@@ -14,13 +14,16 @@ const QrReader = () => {
   // Success
   const onScanSuccess = (result: QrScanner.ScanResult) => {
     // 🖨 Print the "result" to browser console.
-    console.log(result);
+    // console.log(result);
     // ✅ Handle success.
     // 😎 You can do whatever you want with the scanned result.
+    if (onScan) {
+      onScan(result.data);
+    }
   };
 
   const onScanFail = (err: string | Error) => {
-    console.log(err);
+    // console.log(err);
   };
 
   useEffect(() => {
@@ -65,6 +68,15 @@ const QrReader = () => {
   }, [qrOn]);
 
   return (
+    // <div className="w-full h-full relative mx-0 my-auto">
+    //   {/* QR */}
+    //   <video ref={videoEl} className="w-full h-full object-fill"></video>
+    //   <div ref={qrBoxEl} className="qr-box">
+    //     <div className="qr-frame">
+    //       <Frame />
+    //     </div>
+    //   </div>
+    //   </div>
     <div className="qr-reader">
       {/* QR */}
       <video ref={videoEl}></video>
