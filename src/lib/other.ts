@@ -10,3 +10,11 @@ export function makeId(length: number) {
   }
   return result;
 }
+
+export function validateQRSouvenir(str: string) {
+  const tag = "@kym-voucher";
+  if (!str.endsWith(tag)) return false;
+  str = str.replace(tag, "");
+  if (str.length !== 20) return false;
+  return true;
+}

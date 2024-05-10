@@ -3,7 +3,13 @@ import { useEffect, useRef, useState } from "react";
 
 import QrScanner from "qr-scanner";
 
-const QrReader = ({ onScan }: { onScan?: (text: string) => void }) => {
+const QrReader = ({
+  onScan,
+  frameIcon,
+}: {
+  onScan?: (text: string) => void;
+  frameIcon?: JSX.Element;
+}) => {
   const scanner = useRef<QrScanner>();
   const videoEl = useRef<HTMLVideoElement>(null);
   const qrBoxEl = useRef<HTMLDivElement>(null);
@@ -68,22 +74,11 @@ const QrReader = ({ onScan }: { onScan?: (text: string) => void }) => {
   }, [qrOn]);
 
   return (
-    // <div className="w-full h-full relative mx-0 my-auto">
-    //   {/* QR */}
-    //   <video ref={videoEl} className="w-full h-full object-fill"></video>
-    //   <div ref={qrBoxEl} className="qr-box">
-    //     <div className="qr-frame">
-    //       <Frame />
-    //     </div>
-    //   </div>
-    //   </div>
     <div className="qr-reader">
       {/* QR */}
       <video ref={videoEl}></video>
       <div ref={qrBoxEl} className="qr-box">
-        <div className="qr-frame">
-          <Frame />
-        </div>
+        <div className="qr-frame">{frameIcon ? frameIcon : <Frame />}</div>
       </div>
     </div>
   );

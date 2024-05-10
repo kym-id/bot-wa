@@ -8,6 +8,7 @@ export interface EventSouvenirStore {
 
 interface EventSouvenirAction {
   setTotalVoucher: (n: number) => void;
+  setTotalRedeemed: (n: number) => void;
 }
 
 export const useEventSouvenirStore = create<
@@ -18,5 +19,8 @@ export const useEventSouvenirStore = create<
   totalRedeemed: 0,
   setTotalVoucher: (n) => {
     set({ totalVoucher: n });
+  },
+  setTotalRedeemed: (n) => {
+    set({ totalRedeemed: n });
   },
 }));

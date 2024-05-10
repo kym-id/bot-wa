@@ -6,13 +6,46 @@ import {
   EventSouvenirStore,
   useEventSouvenirStore,
 } from "~/store/event-souvenir";
-import { getTotalVoucher } from "./action";
+import { checkVoucher, getTotalVoucher } from "./action";
 import { toast } from "sonner";
+import { validateQRSouvenir } from "~/lib/other";
+import { Loading } from "~/components/icon";
 
 function QRScanComponent() {
+  const key = useEventSouvenirStore((s) => s.key);
+  const totalRedeemed = useEventSouvenirStore((s) => s.totalRedeemed);
+  const setTotalRedeemed = useEventSouvenirStore((s) => s.setTotalRedeemed);
+
   const [scanResult, setScanResult] = useState<string>("");
+  const [loadingCheckVoucher, startCheckVoucher] = useTransition();
+
+  function increaseRedeemed() {
+    setTotalRedeemed(totalRedeemed + 1);
+  }
+
   useEffect(() => {
-    toast.success(scanResult);
+    const v = validateQRSouvenir(scanResult);
+    if (!v) {
+      toast.warning(`QR Code bukan voucher souvenir`);
+      return;
+    }
+    startCheckVoucher(async () => {
+      const r = await checkVoucher({
+        key,
+        code: scanResult.replace("@kym-voucher", ""),
+      });
+      if (r === "not-found") {
+        toast.warning(`Kode voucher tidak dapat ditemukan`);
+        return;
+      } else if (r === "redeemed") {
+        toast.error(`Kode voucher telah ditukarkan`);
+        return;
+      } else if (r === "valid") {
+        toast.success(`Kode voucher valid`);
+        increaseRedeemed();
+        return;
+      }
+    });
   }, [scanResult]);
 
   return (
@@ -20,6 +53,7 @@ function QRScanComponent() {
       onScan={(text) => {
         setScanResult(text);
       }}
+      frameIcon={loadingCheckVoucher ? <Loading /> : undefined}
     />
   );
 }
@@ -30,6 +64,7 @@ function EventDetails({ name }: { name: string }) {
   const totalRedeemed = useEventSouvenirStore((s) => s.totalRedeemed);
 
   const setTotalVoucher = useEventSouvenirStore((s) => s.setTotalVoucher);
+
   const [isPending, startTransition] = useTransition();
 
   useEffect(() => {
