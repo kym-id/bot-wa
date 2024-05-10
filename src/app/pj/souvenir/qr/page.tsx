@@ -42,11 +42,11 @@ async function QRSouvenirScanPage({
   }, 0);
 
   return (
-    <div className="flex flex-col justify-center items-center w-full md:w-6/12 mx-auto select-none text-white h-dvh">
+    <div className="flex flex-col justify-center items-center w-full md:w-6/12 mx-auto select-none text-white max-h-dvh">
       <EventSouvenirStateSetter
         initialState={{ totalVoucher, totalRedeemed, key }}
       />
-      <div className="flex h-[50%] relative">
+      <div className="flex h-[50%]">
         <QRScanComponent />
       </div>
       <div className="mt-2 w-full flex flex-col items-center">
