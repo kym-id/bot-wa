@@ -10,17 +10,6 @@ import {
 
 import "./flash.css";
 
-const data = [
-  { option: "Gantungan Kunci" },
-  { option: "Pin" },
-  { option: "Pouch" },
-  { option: "Totebag" },
-  // { option: "Gantungan Kunci" },
-  // { option: "Pin" },
-  // { option: "Pouch" },
-  // { option: "Totebag" },
-];
-
 export const metadata: Metadata = {
   title: "Pengundian souvenir",
 };
@@ -45,7 +34,7 @@ function SpinSouvenirPage({
       <Decoration02 className="absolute w-[30%] top-[10rem] right-44 animate-bounce" />
       {/* Right Top Decoration */}
       <Decoration01 className="absolute right-[-5%] top-0 w-[35%] rotate-[30deg]" />
-      <SpinningWheel data={data} />
+      <SpinningWheel />
       <SelectedPrize className="absolute bottom-40 right-[24rem] text-center translate-x-[50%]" />
       <Hotkeys />
     </div>

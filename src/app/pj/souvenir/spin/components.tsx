@@ -3,23 +3,23 @@ import { WheelData } from "@boriska420/react-custom-roulette/dist/components/Whe
 import dynamic from "next/dynamic";
 import { useEffect } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
-import { useSpinningWheelStore } from "~/store/spinning-wheel";
+import { RawWheelData, useSpinningWheelStore } from "~/store/spinning-wheel";
 
 const Wheel = dynamic(
   () => import("@boriska420/react-custom-roulette").then((mod) => mod.Wheel),
   { ssr: false }
 );
 
-export function SpinningWheel({ data }: { data: WheelData[] }) {
+export function SpinningWheel() {
   const spin = useSpinningWheelStore((s) => s.spin);
   const prizeNumber = useSpinningWheelStore((s) => s.prizeNumber);
   const setSpin = useSpinningWheelStore((s) => s.setSpin);
-  const setData = useSpinningWheelStore((s) => s.setData);
+  const data = useSpinningWheelStore((s) => s.data);
   const showingPrize = useSpinningWheelStore((s) => s.showingPrize);
 
-  useEffect(() => {
-    setData(data);
-  }, [data]);
+  if (data.length === 0) {
+    return <></>;
+  }
 
   return (
     <div className="h-full aspect-square relative flex">
@@ -87,12 +87,21 @@ export function DecorationLogo({ className }: { className?: string }) {
   );
 }
 
+const rawDataDummy: RawWheelData[] = [
+  { option: "Gantungan Kunci", total: 15 },
+  { option: "Pin", total: 15 },
+  { option: "Pouch", total: 2 },
+  { option: "Totebag", total: 2 },
+];
+
 export function Hotkeys() {
   const startSpin = useSpinningWheelStore((s) => s.startSpin);
   const reset = useSpinningWheelStore((s) => s.reset);
+  const setRawData = useSpinningWheelStore((s) => s.setRawData);
 
   useHotkeys("space", () => startSpin());
   useHotkeys("r", () => reset());
+  useHotkeys("s", () => setRawData(rawDataDummy));
   return <></>;
 }
 
