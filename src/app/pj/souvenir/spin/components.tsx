@@ -47,3 +47,32 @@ export function SpinningWheel({ data }: { data: WheelData[] }) {
     </div>
   );
 }
+
+export function Decoration01({ className }: { className?: string }) {
+  return (
+    <img
+      src="/spin/decoration-01.png"
+      alt="decoration-01"
+      className={className}
+    />
+  );
+}
+
+export function Decoration02({ className }: { className?: string }) {
+  return (
+    <img
+      src="/spin/spin-n-win-logo.png"
+      alt="decoration-spin-n-win-logo"
+      className={className}
+    />
+  );
+}
+
+export function DecorationLogo({ className }: { className?: string }) {
+  return (
+    <div className={className}>
+      <img src="/spin/kym.png" alt="logo kym" className="z-20 relative" />
+      <div className="w-[89%] h-[50%] bg-white absolute bottom-0"></div>
+    </div>
+  );
+}
