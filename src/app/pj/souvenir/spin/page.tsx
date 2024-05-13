@@ -40,7 +40,7 @@ function SpinSouvenirPage({
       {/* Left Top Decoration */}
       <Decoration01 className="absolute left-[-5%] top-0 w-[40%] rotate-[-20deg]" />
       {/* Logo Decoration */}
-      <DecorationLogo className="absolute w-[17%] top-5 mx-auto left-0 right-0" />
+      <DecorationLogo className="absolute w-[17%] top-5 mx-auto left-0 right-0 z-20" />
       {/* Spin n Win */}
       <Decoration02 className="absolute w-[30%] top-[10rem] right-44 animate-bounce" />
       {/* Right Top Decoration */}

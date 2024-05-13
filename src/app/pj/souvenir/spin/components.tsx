@@ -36,6 +36,7 @@ export function SpinningWheel({ data }: { data: WheelData[] }) {
           outerBorderWidth={1}
           radiusLineColor={"#eeeeee"}
           radiusLineWidth={0.1}
+          spinDuration={0.5}
           onStopSpinning={() => {
             // setMustSpin(false);
             setSpin(false);
@@ -88,25 +89,38 @@ export function DecorationLogo({ className }: { className?: string }) {
 
 export function Hotkeys() {
   const startSpin = useSpinningWheelStore((s) => s.startSpin);
+  const reset = useSpinningWheelStore((s) => s.reset);
+
   useHotkeys("space", () => startSpin());
+  useHotkeys("r", () => reset());
   return <></>;
 }
 
 export function SelectedPrize({ className }: { className?: string }) {
+  const spin = useSpinningWheelStore((s) => s.spin);
   const prizeNumber = useSpinningWheelStore((s) => s.prizeNumber);
   const showPrize = useSpinningWheelStore((s) => s.showPrize);
   const data = useSpinningWheelStore((s) => s.data);
-  if (data.length === 0 || !showPrize) {
+  if (data.length === 0) {
     return <></>;
   }
   return (
     <div className={className}>
-      <span className="text-white text-2xl font-semibold">
-        Selamat, anda mendapatkan
-      </span>
-      <h3 className="text-white text-6xl font-bold animate-pulse">
-        {data[prizeNumber].option}
-      </h3>
+      {showPrize && (
+        <>
+          <span className="text-white text-2xl font-semibold">
+            Selamat, anda mendapatkan
+          </span>
+          <h3 className="text-white text-6xl font-bold animate-pulse">
+            {data[prizeNumber].option}
+          </h3>
+        </>
+      )}
+      {!showPrize && !spin && (
+        <h3 className="text-white text-3xl font-bold">
+          Tekan SPASI untuk mengundi hadiah
+        </h3>
+      )}
     </div>
   );
 }
