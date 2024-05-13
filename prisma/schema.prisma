@@ -37,7 +37,7 @@ model BotFollowUp {
 
 model Event {
   id   String @id @default(cuid())
-  slug String @unique @db.Char(15)
+  slug String @unique @db.Char(30)
   name String @db.Char(50)
   key  String @unique @db.Char(20)
 

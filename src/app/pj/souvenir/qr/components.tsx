@@ -74,7 +74,7 @@ function EventDetails({ name }: { name: string }) {
         const n = await getTotalVoucher({ key });
         setTotalVoucher(n);
       });
-    }, 2000);
+    }, 3000);
 
     return () => {
       clearInterval(interval);
