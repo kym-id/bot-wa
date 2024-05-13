@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@boriska420/react-custom-roulette':
+        specifier: ^1.4.2
+        version: 1.4.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@prisma/client':
         specifier: ^5.13.0
         version: 5.13.0(prisma@5.13.0)
@@ -73,6 +76,12 @@ packages:
   '@babel/runtime@7.24.5':
     resolution: {integrity: sha512-Nms86NXrsaeU9vbBJKni6gXiEXZ4CVpYVzEjDH9Sb8vmZ3UljyA1GSOJl/6LGPO8EHLuSF9H+IxNXHPX8QHJ4g==}
     engines: {node: '>=6.9.0'}
+
+  '@boriska420/react-custom-roulette@1.4.2':
+    resolution: {integrity: sha512-WsYOXWFtnLTt//6UCmt42w3JoKqFt2PqgLj3qXrpJ0tQvOKmQSki9gAE2FEbVc5qxEFUS9cGTsdo+t0KqobJlw==}
+    peerDependencies:
+      react: ^18.2.0
+      react-dom: ^18.2.0
 
   '@eslint-community/eslint-utils@4.4.0':
     resolution: {integrity: sha512-1/sA4dwrzBAyeUoQ6oxahHKmrZvsnLCg4RfxW3ZFGGmQkSNQPFNLV9CUEFQP1x9EYXHTo5p6xdhZM1Ne9p/AfA==}
@@ -1666,6 +1675,11 @@ snapshots:
   '@babel/runtime@7.24.5':
     dependencies:
       regenerator-runtime: 0.14.1
+
+  '@boriska420/react-custom-roulette@1.4.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
 
   '@eslint-community/eslint-utils@4.4.0(eslint@8.57.0)':
     dependencies:

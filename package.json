@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@boriska420/react-custom-roulette": "^1.4.2",
     "@prisma/client": "^5.13.0",
     "@vercel/og": "^0.6.2",
     "dayjs": "^1.11.11",
