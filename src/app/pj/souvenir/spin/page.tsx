@@ -3,18 +3,22 @@ import {
   Decoration01,
   Decoration02,
   DecorationLogo,
+  Hotkeys,
+  SelectedPrize,
   SpinningWheel,
 } from "./components";
+
+import "./flash.css";
 
 const data = [
   { option: "Gantungan Kunci" },
   { option: "Pin" },
   { option: "Pouch" },
   { option: "Totebag" },
-  { option: "Gantungan Kunci" },
-  { option: "Pin" },
-  { option: "Pouch" },
-  { option: "Totebag" },
+  // { option: "Gantungan Kunci" },
+  // { option: "Pin" },
+  // { option: "Pouch" },
+  // { option: "Totebag" },
 ];
 
 export const metadata: Metadata = {
@@ -42,6 +46,8 @@ function SpinSouvenirPage({
       {/* Right Top Decoration */}
       <Decoration01 className="absolute right-[-5%] top-0 w-[35%] rotate-[30deg]" />
       <SpinningWheel data={data} />
+      <SelectedPrize className="absolute bottom-40 right-[24rem] text-center translate-x-[50%]" />
+      <Hotkeys />
     </div>
   );
 }

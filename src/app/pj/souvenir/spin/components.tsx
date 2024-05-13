@@ -1,7 +1,9 @@
 "use client";
 import { WheelData } from "@boriska420/react-custom-roulette/dist/components/Wheel/types";
 import dynamic from "next/dynamic";
-import { useState } from "react";
+import { useEffect } from "react";
+import { useHotkeys } from "react-hotkeys-hook";
+import { useSpinningWheelStore } from "~/store/spinning-wheel";
 
 const Wheel = dynamic(
   () => import("@boriska420/react-custom-roulette").then((mod) => mod.Wheel),
@@ -9,22 +11,23 @@ const Wheel = dynamic(
 );
 
 export function SpinningWheel({ data }: { data: WheelData[] }) {
-  const [mustSpin, setMustSpin] = useState(false);
-  const [prizeNumber, setPrizeNumber] = useState(0);
+  const spin = useSpinningWheelStore((s) => s.spin);
+  const prizeNumber = useSpinningWheelStore((s) => s.prizeNumber);
+  const setSpin = useSpinningWheelStore((s) => s.setSpin);
+  const setData = useSpinningWheelStore((s) => s.setData);
+  const showingPrize = useSpinningWheelStore((s) => s.showingPrize);
 
-  const handleSpinClick = () => {
-    if (!mustSpin) {
-      const newPrizeNumber = Math.floor(Math.random() * data.length);
-      setPrizeNumber(newPrizeNumber);
-      setMustSpin(true);
-    }
-  };
+  useEffect(() => {
+    setData(data);
+  }, [data]);
 
   return (
     <div className="h-full aspect-square relative flex">
+      {/* Background Light */}
+      <DecorationBgLight className="absolute h-[60%] aspect-square bulb left-0 right-0 mx-auto my-auto bottom-0 top-0" />
       <div className="h-[70%] aspect-square mx-auto my-auto relative z-10 [&>div]:!w-full">
         <Wheel
-          mustStartSpinning={mustSpin}
+          mustStartSpinning={spin}
           prizeNumber={prizeNumber}
           data={data}
           backgroundColors={["#ffffff", "#ff0000"]}
@@ -34,7 +37,9 @@ export function SpinningWheel({ data }: { data: WheelData[] }) {
           radiusLineColor={"#eeeeee"}
           radiusLineWidth={0.1}
           onStopSpinning={() => {
-            setMustSpin(false);
+            // setMustSpin(false);
+            setSpin(false);
+            showingPrize();
           }}
           pointerProps={{ src: "/spin/pin.png", style: { rotate: "45deg" } }}
         />
@@ -68,11 +73,40 @@ export function Decoration02({ className }: { className?: string }) {
   );
 }
 
+export function DecorationBgLight({ className }: { className?: string }) {
+  return <div className={className}></div>;
+}
+
 export function DecorationLogo({ className }: { className?: string }) {
   return (
     <div className={className}>
       <img src="/spin/kym.png" alt="logo kym" className="z-20 relative" />
       <div className="w-[89%] h-[50%] bg-white absolute bottom-0"></div>
+    </div>
+  );
+}
+
+export function Hotkeys() {
+  const startSpin = useSpinningWheelStore((s) => s.startSpin);
+  useHotkeys("space", () => startSpin());
+  return <></>;
+}
+
+export function SelectedPrize({ className }: { className?: string }) {
+  const prizeNumber = useSpinningWheelStore((s) => s.prizeNumber);
+  const showPrize = useSpinningWheelStore((s) => s.showPrize);
+  const data = useSpinningWheelStore((s) => s.data);
+  if (data.length === 0 || !showPrize) {
+    return <></>;
+  }
+  return (
+    <div className={className}>
+      <span className="text-white text-2xl font-semibold">
+        Selamat, anda mendapatkan
+      </span>
+      <h3 className="text-white text-6xl font-bold animate-pulse">
+        {data[prizeNumber].option}
+      </h3>
     </div>
   );
 }
