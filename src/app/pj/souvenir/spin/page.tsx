@@ -42,11 +42,6 @@ function SpinSouvenirPage({
   params: { slug: string };
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
-  const [client, setClient] = useState(false);
-  useEffect(() => {
-    setClient(true);
-  }, []);
-
   const [mustSpin, setMustSpin] = useState(false);
   const [prizeNumber, setPrizeNumber] = useState(0);
 
@@ -60,11 +55,12 @@ function SpinSouvenirPage({
 
   return (
     <div
-      className="flex w-dvw h-dvh overflow-hidden bg-[url('/spin/back.jpg')]"
+      className="flex w-dvw h-dvh overflow-hidden bg-[url('/spin/back.jpg')] select-none"
       style={{ backgroundSize: "5%" }}
     >
-      <div className="h-full w-[50%] flex flex-col justify-center py-0 relative">
-        <div className="w-full relative z-10">
+      {/* Spinning Wheel */}
+      <div className="h-full aspect-square relative flex">
+        <div className="h-[70%] aspect-square mx-auto my-auto relative z-10 [&>div]:!w-full">
           <Wheel
             mustStartSpinning={mustSpin}
             prizeNumber={prizeNumber}
@@ -78,12 +74,13 @@ function SpinSouvenirPage({
             onStopSpinning={() => {
               setMustSpin(false);
             }}
+            pointerProps={{ src: "/spin/pin.png", style: { rotate: "45deg" } }}
           />
         </div>
         <img
           src="/spin/stand.png"
           alt="Stand Spin wheel"
-          className="absolute z-0 w-[20%] bottom-0 right-[50%] translate-x-[50%]"
+          className="absolute bottom-0 left-0 right-0 mx-auto h-[17%]"
         />
       </div>
       <button className={"spin-button"} onClick={handleSpinClick}>
