@@ -11,6 +11,7 @@ export interface SpinningWheelStore {
   data: WheelDataType[];
   prizeNumber: number;
   showPrize: boolean;
+  showInput: boolean;
 }
 
 interface SpinningWheelAction {
@@ -20,6 +21,7 @@ interface SpinningWheelAction {
   setData: (data: WheelDataType[]) => void;
   showingPrize: () => void;
   reset: () => void;
+  setShowInput: (showInput: boolean) => void;
 }
 
 function convertRawDataToData(raw: RawWheelData[]): WheelDataType[] {
@@ -36,6 +38,7 @@ export const useSpinningWheelStore = create<
   data: [],
   prizeNumber: 0,
   showPrize: false,
+  showInput: false,
   startSpin: () => {
     if (!get().spin && !get().showPrize) {
       console.log(`Spin`);
@@ -88,5 +91,8 @@ export const useSpinningWheelStore = create<
       const data = convertRawDataToData(get().rawData);
       set({ showPrize: false, data });
     }
+  },
+  setShowInput: (showInput) => {
+    set({ showInput });
   },
 }));

@@ -2,6 +2,7 @@
 import dynamic from "next/dynamic";
 import { useHotkeys } from "react-hotkeys-hook";
 import { Input } from "~/components/ui/input";
+import { makeId } from "~/lib/other";
 import { RawWheelData, useSpinningWheelStore } from "~/store/spinning-wheel";
 
 const Wheel = dynamic(
@@ -78,29 +79,22 @@ export function DecorationBgLight({ className }: { className?: string }) {
 }
 
 export function DecorationLogo({ className }: { className?: string }) {
+  const setShowInput = useSpinningWheelStore((s) => s.setShowInput);
+
   return (
-    <div className={className}>
+    <div className={className} onClick={() => setShowInput(true)}>
       <img src="/spin/kym.png" alt="logo kym" className="z-20 relative" />
       <div className="w-[89%] h-[50%] bg-white absolute bottom-0"></div>
     </div>
   );
 }
 
-const rawDataDummy: RawWheelData[] = [
-  { option: "Gantungan Kunci", total: 15, key: "a" },
-  { option: "Pin", total: 15, key: "b" },
-  { option: "Pouch", total: 2, key: "c" },
-  { option: "Totebag", total: 2, key: "d" },
-];
-
 export function Hotkeys() {
   const startSpin = useSpinningWheelStore((s) => s.startSpin);
   const reset = useSpinningWheelStore((s) => s.reset);
-  const setRawData = useSpinningWheelStore((s) => s.setRawData);
 
   useHotkeys("space", () => startSpin());
   useHotkeys("r", () => reset());
-  useHotkeys("s", () => setRawData(rawDataDummy));
   return <></>;
 }
 
@@ -134,7 +128,16 @@ export function SelectedPrize({ className }: { className?: string }) {
 }
 
 export function InputPrize({ className }: { className?: string }) {
+  const showInput = useSpinningWheelStore((s) => s.showInput);
+  const setShowInput = useSpinningWheelStore((s) => s.setShowInput);
   const rawData = useSpinningWheelStore((s) => s.rawData);
+  const setRawData = useSpinningWheelStore((s) => s.setRawData);
+  const reset = useSpinningWheelStore((s) => s.reset);
+
+  if (!showInput) {
+    return <></>;
+  }
+
   return (
     <div className={className}>
       <div className="w-[40%] bg-white rounded-md">
@@ -149,12 +152,24 @@ export function InputPrize({ className }: { className?: string }) {
                 placeholder="Nama Hadiah"
                 className="border-black"
                 value={data.option}
+                onChange={(e) => {
+                  setRawData([
+                    ...rawData.filter((d) => d.key !== data.key),
+                    { ...data, option: e.target.value },
+                  ]);
+                }}
               />
               <Input
                 type="number"
                 placeholder="Jumlah Hadiah"
                 className="w-[40%] border-black"
                 value={data.total}
+                onChange={(e) => {
+                  setRawData([
+                    ...rawData.filter((d) => d.key !== data.key),
+                    { ...data, total: parseInt(e.target.value) },
+                  ]);
+                }}
               />
             </div>
           ))}
@@ -162,10 +177,24 @@ export function InputPrize({ className }: { className?: string }) {
             <button
               className="h-10 px-4 py-2 rounded-md border  text-white bg-black font-semibold disabled:bg-black/50"
               // disabled
+              onClick={() => {
+                const newPrize: RawWheelData = {
+                  option: "Nama Hadiah",
+                  total: 0,
+                  key: makeId(10),
+                };
+                setRawData([...rawData, newPrize]);
+              }}
             >
               Tambah Hadiah
             </button>
-            <button className="h-10 px-4 py-2 rounded-md border  text-white bg-black font-semibold">
+            <button
+              className="h-10 px-4 py-2 rounded-md border  text-white bg-black font-semibold"
+              onClick={() => {
+                reset();
+                setShowInput(false);
+              }}
+            >
               Simpan
             </button>
           </div>
