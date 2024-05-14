@@ -1,8 +1,7 @@
 "use client";
-import { WheelData } from "@boriska420/react-custom-roulette/dist/components/Wheel/types";
 import dynamic from "next/dynamic";
-import { useEffect } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
+import { Input } from "~/components/ui/input";
 import { RawWheelData, useSpinningWheelStore } from "~/store/spinning-wheel";
 
 const Wheel = dynamic(
@@ -88,10 +87,10 @@ export function DecorationLogo({ className }: { className?: string }) {
 }
 
 const rawDataDummy: RawWheelData[] = [
-  { option: "Gantungan Kunci", total: 15 },
-  { option: "Pin", total: 15 },
-  { option: "Pouch", total: 2 },
-  { option: "Totebag", total: 2 },
+  { option: "Gantungan Kunci", total: 15, key: "a" },
+  { option: "Pin", total: 15, key: "b" },
+  { option: "Pouch", total: 2, key: "c" },
+  { option: "Totebag", total: 2, key: "d" },
 ];
 
 export function Hotkeys() {
@@ -130,6 +129,48 @@ export function SelectedPrize({ className }: { className?: string }) {
           Tekan SPASI untuk mengundi hadiah
         </h3>
       )}
+    </div>
+  );
+}
+
+export function InputPrize({ className }: { className?: string }) {
+  const rawData = useSpinningWheelStore((s) => s.rawData);
+  return (
+    <div className={className}>
+      <div className="w-[40%] bg-white rounded-md">
+        <div className="py-1 px-4 border-b border-black">
+          <span className="text-black font-semibold text-lg">Data Hadiah</span>
+        </div>
+        <div className="py-2 px-4 text-black flex flex-col space-y-2">
+          {rawData.map((data) => (
+            <div className="flex space-x-2" key={data.key}>
+              <Input
+                type="text"
+                placeholder="Nama Hadiah"
+                className="border-black"
+                value={data.option}
+              />
+              <Input
+                type="number"
+                placeholder="Jumlah Hadiah"
+                className="w-[40%] border-black"
+                value={data.total}
+              />
+            </div>
+          ))}
+          <div className="mt-2 flex justify-between">
+            <button
+              className="h-10 px-4 py-2 rounded-md border  text-white bg-black font-semibold disabled:bg-black/50"
+              // disabled
+            >
+              Tambah Hadiah
+            </button>
+            <button className="h-10 px-4 py-2 rounded-md border  text-white bg-black font-semibold">
+              Simpan
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

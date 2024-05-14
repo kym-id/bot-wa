@@ -3,7 +3,7 @@ import { toast } from "sonner";
 import { create } from "zustand";
 import { weightedRandom } from "~/lib/other";
 
-export type RawWheelData = WheelDataType & { total: number };
+export type RawWheelData = WheelDataType & { total: number; key: string };
 
 export interface SpinningWheelStore {
   spin: boolean;

@@ -4,6 +4,7 @@ import {
   Decoration02,
   DecorationLogo,
   Hotkeys,
+  InputPrize,
   SelectedPrize,
   SpinningWheel,
 } from "./components";
@@ -37,6 +38,7 @@ function SpinSouvenirPage({
       <SpinningWheel />
       <SelectedPrize className="absolute bottom-40 right-[24rem] text-center translate-x-[50%]" />
       <Hotkeys />
+      <InputPrize className="absolute z-50 w-full h-full bg-black/60 flex justify-center items-center" />
     </div>
   );
 }
