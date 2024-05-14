@@ -34,7 +34,7 @@ export function SpinningWheel() {
           textColors={["#ff0000", "#ffffff"]}
           outerBorderColor={"#eeeeee"}
           outerBorderWidth={1}
-          radiusLineColor={"#eeeeee"}
+          radiusLineColor={"#ff0000"}
           radiusLineWidth={0.1}
           spinDuration={0.5}
           onStopSpinning={() => {

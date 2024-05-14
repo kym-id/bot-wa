@@ -27,7 +27,12 @@ interface SpinningWheelAction {
 
 function convertRawDataToData(raw: RawWheelData[]): WheelDataType[] {
   const data = raw.filter((d) => d.total > 0);
-  if (data.length > 3) return data;
+  if (data.length > 3) {
+    if (data.length % 2 === 1) {
+      return [...data, ...data];
+    }
+    return data;
+  }
   return [...data, ...data];
 }
 
