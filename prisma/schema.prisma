@@ -10,7 +10,7 @@ datasource db {
 model User {
   jid      String @id
   name     String @db.Char(50)
-  pronouns String @db.Char(10)
+  pronouns String @db.Char(20)
 
   institution String?       @db.Char(50)
   followUp    BotFollowUp[]
