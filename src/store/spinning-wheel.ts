@@ -2,6 +2,7 @@ import { WheelDataType } from "@boriska420/react-custom-roulette";
 import { toast } from "sonner";
 import { create } from "zustand";
 import { weightedRandom } from "~/lib/other";
+import { persist, createJSONStorage } from "zustand/middleware";
 
 export type RawWheelData = WheelDataType & { total: number; key: string };
 
@@ -32,67 +33,74 @@ function convertRawDataToData(raw: RawWheelData[]): WheelDataType[] {
 
 export const useSpinningWheelStore = create<
   SpinningWheelStore & SpinningWheelAction
->((set, get) => ({
-  spin: false,
-  rawData: [],
-  data: [],
-  prizeNumber: 0,
-  showPrize: false,
-  showInput: false,
-  startSpin: () => {
-    if (!get().spin && !get().showPrize) {
-      console.log(`Spin`);
-      const rawData = get().rawData.filter((d) => d.total > 0);
-      const weights = rawData.map((d) => d.total);
-      const selected = weightedRandom(rawData, weights);
+>()(
+  persist(
+    (set, get) => ({
+      spin: false,
+      rawData: [],
+      data: [],
+      prizeNumber: 0,
+      showPrize: false,
+      showInput: false,
+      startSpin: () => {
+        if (!get().spin && !get().showPrize) {
+          console.log(`Spin`);
+          const rawData = get().rawData.filter((d) => d.total > 0);
+          const weights = rawData.map((d) => d.total);
+          const selected = weightedRandom(rawData, weights);
 
-      if (selected.index === -1) {
-        toast.error(`Error spinning`);
-        return;
-      }
-
-      const newPrizeNumber = selected.index;
-      const data = get().data;
-      if (data[newPrizeNumber].option === selected.item.option) {
-        const newRawData = rawData.map((d) => {
-          if (d.option === selected.item.option) {
-            return { ...d, total: d.total - 1 };
+          if (selected.index === -1) {
+            toast.error(`Error spinning`);
+            return;
           }
-          return d;
-        });
-        set({
-          spin: true,
-          prizeNumber: newPrizeNumber,
-          showPrize: false,
-          rawData: newRawData,
-        });
-      } else {
-        toast.error(`Different prize`);
-      }
-    } else {
-      toast.error(`Anda hanya diperkenankan mengundi 1 kali`);
+
+          const newPrizeNumber = selected.index;
+          const data = get().data;
+          if (data[newPrizeNumber].option === selected.item.option) {
+            const newRawData = rawData.map((d) => {
+              if (d.option === selected.item.option) {
+                return { ...d, total: d.total - 1 };
+              }
+              return d;
+            });
+            set({
+              spin: true,
+              prizeNumber: newPrizeNumber,
+              showPrize: false,
+              rawData: newRawData,
+            });
+          } else {
+            toast.error(`Different prize`);
+          }
+        } else {
+          toast.error(`Anda hanya diperkenankan mengundi 1 kali`);
+        }
+      },
+      setSpin: (spin) => {
+        set({ spin });
+      },
+      setRawData: (rawData) => {
+        const data = convertRawDataToData(rawData);
+        set({ rawData, data });
+      },
+      setData: (data) => {
+        // set({ data });
+      },
+      showingPrize: () => {
+        set({ showPrize: true });
+      },
+      reset: () => {
+        if (!get().spin) {
+          const data = convertRawDataToData(get().rawData);
+          set({ showPrize: false, data });
+        }
+      },
+      setShowInput: (showInput) => {
+        set({ showInput });
+      },
+    }),
+    {
+      name: "spinning-wheel",
     }
-  },
-  setSpin: (spin) => {
-    set({ spin });
-  },
-  setRawData: (rawData) => {
-    const data = convertRawDataToData(rawData);
-    set({ rawData, data });
-  },
-  setData: (data) => {
-    // set({ data });
-  },
-  showingPrize: () => {
-    set({ showPrize: true });
-  },
-  reset: () => {
-    if (!get().spin) {
-      const data = convertRawDataToData(get().rawData);
-      set({ showPrize: false, data });
-    }
-  },
-  setShowInput: (showInput) => {
-    set({ showInput });
-  },
-}));
+  )
+);
